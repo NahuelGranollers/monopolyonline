@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Monopoly Web - Mejorado y Seguro</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#efe9df; --panel:#ffffff; --accent:#0b79d0; --muted:#666;
+    --tile-size:78px; --success:#4caf50; --error:#f44336; --warning:#ff9800;
+  }
+  html,body{height:100%;margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:#222}
+  #app{display:flex;height:100vh;gap:12px;padding:12px;box-sizing:border-box}
+  .left{width:420px;display:flex;flex-direction:column;gap:12px}
+  .boardWrap{flex:1;background:linear-gradient(180deg,#efe7db,#e6d9cc);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:center;position:relative}
+  .sidebar{background:var(--panel);box-shadow:0 8px 24px rgba(0,0,0,.08);border-radius:10px;padding:12px;overflow:auto}
+  h2{margin:6px 0 10px 0;font-size:16px;font-weight:600}
+  .controls{display:flex;gap:8px;margin-bottom:8px}
+  .controls input{flex:1;padding:9px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+  .controls button{padding:9px 16px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:all .2s}
+  .controls button:hover{background:#0960a8;transform:translateY(-1px)}
+  .controls button:disabled{background:#ccc;cursor:not-allowed;transform:none}
+  .playersList{display:flex;flex-direction:column;gap:8px}
+  .playerCard{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;border:1px solid #eee;transition:all .2s}
+  .playerCard.active{box-shadow:0 0 0 3px rgba(11,121,208,.2);background:#f8fbff}
+  .playerCard.disconnected{opacity:.5;border-color:#f44336}
+  .token{width:32px;height:32px;border-radius:8px;background:#666;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .btnRow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  button.action{padding:10px 14px;background:#0b79d0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:all .2s;font-size:13px}
+  button.action:hover:not(:disabled){background:#0960a8;transform:translateY(-1px)}
+  button.action:disabled{background:#ddd;color:#999;cursor:not-allowed;transform:none}
+  button.action.danger{background:#f44336}
+  button.action.danger:hover:not(:disabled){background:#d32f2f}
+  .log{background:#faf9f7;border:1px solid #eee;padding:8px;height:140px;overflow:auto;border-radius:6px;font-size:13px;line-height:1.5}
+  .log div{padding:2px 0;border-bottom:1px solid #f0f0f0}
+  .log div:last-child{border:none}
+  .board{width:calc(var(--tile-size) * 11 + 20px);height:calc(var(--tile-size) * 11 + 20px);position:relative;border-radius:10px;perspective:800px}
+  .boardInner{width:100%;height:100%;position:relative}
+  .tile{width:var(--tile-size);height:var(--tile-size);background:#fff;border:2px solid #222;border-radius:8px;position:absolute;display:flex;flex-direction:column;justify-content:space-between;padding:6px;box-sizing:border-box;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.08);transition:all .2s}
+  .tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .tile .title{font-size:11px;font-weight:800;line-height:1.2}
+  .colorBar{height:14px;border-radius:4px;margin-top:4px}
+  .playersMarkers{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+  .tokenSmall{width:16px;height:16px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);animation:pulse .5s ease-in-out}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  .ownerBadge{position:absolute;right:6px;bottom:6px;width:14px;height:14px;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+  .modal-simple{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);z-index:99999;animation:fadeIn .3s}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .diceBox{display:flex;gap:28px;align-items:center;justify-content:center;flex-direction:row}
+  .dieSimple{width:180px;height:180px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:96px;font-weight:900;color:#111;box-shadow:0 18px 48px rgba(0,0,0,.5);transition:transform .15s ease}
+  .diePulse{animation:dicePulse .3s ease-in-out}
+  @keyframes dicePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1) rotate(5deg)}}
+  .caption{color:#fff;margin-top:20px;font-weight:700;font-size:20px;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+  .alert{padding:10px;border-radius:6px;margin-bottom:10px;font-size:13px;font-weight:600}
+  .alert.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+  .alert.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+  .alert.info{background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb}
+  .status-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+  .status-indicator.online{background:#4caf50}
+  .status-indicator.offline{background:#f44336}
+  .roomId{background:#f0f0f0;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:12px;display:inline-block;margin-top:6px}
+  @media (max-width:900px){
+    #app{flex-direction:column;height:auto}
+    .left{width:100%;order:2}
+    .boardWrap{width:100%;height:450px;order:1}
+    .board{transform:scale(0.65)}
+    .dieSimple{width:120px;height:120px;font-size:64px}
+    .diceBox{gap:16px}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="left">
+    <div class="sidebar">
+      <h2>🎲 Monopoly Multijugador</h2>
+      <div id="alerts"></div>
+      
+      <div class="controls">
+  <input id="name" placeholder="Tu nombre" maxlength="20">
+  <button id="joinBtn">Unirse</button>
+</div>
+<div class="controls">
+  <input id="room" placeholder="ID de sala" maxlength="20">
+  <button id="createBtn">Crear Sala</button>
+  <button id="startBtn" disabled>Comenzar</button>
+</div>
+
+<div>
+  <p id="status"></p>
+</div>
+
+      <div id="roomInfo" style="display:none">
+        <span class="status-indicator online"></span>
+        <strong>Sala:</strong> <span class="roomId" id="roomIdDisplay"></span>
+        <button id="copyRoomBtn" style="margin-left:8px;padding:4px 8px;font-size:11px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer">📋 Copiar</button>
+      </div>
+
+      <h2>👥 Jugadores (<span id="playerCount">0</span>)</h2>
+      <div class="playersList" id="playersList"></div>
+
+      <h2>🎮 Acciones</h2>
+      <div class="btnRow">
+        <button class="action" id="rollBtn" disabled>🎲 Tirar dados</button>
+        <button class="action" id="endBtn" disabled>⏭️ Finalizar turno</button>
+        <button class="action" id="buyBtn" disabled>💰 Comprar</button>
+        <button class="action" id="buildBtn" disabled>🏠 Construir</button>
+        <button class="action" id="mortBtn" disabled>🏦 Hipotecar</button>
+      </div>
+
+      <h2>📊 Estado</h2>
+      <div style="background:#f8f9fa;padding:10px;border-radius:6px">
+        <div><strong>Turno:</strong> <span id="turnInfo">-</span></div>
+        <div style="margin-top:6px"><strong>Últimos dados:</strong> <span id="diceSmall">-</span></div>
+        <div style="margin-top:6px"><strong>Tu dinero:</strong> <span id="moneyInfo" style="color:#4caf50;font-weight:700">$0</span></div>
+      </div>
+
+      <h2>📜 Registro</h2>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+
+  <div class="boardWrap">
+    <div class="board" id="board">
+      <div class="boardInner" id="boardInner"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="client.js"></script>
+</body>
+</html>
