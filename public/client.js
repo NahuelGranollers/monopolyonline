@@ -99,6 +99,7 @@ createBtn.onclick = () => {
 joinBtn.onclick = () => {
   const name = nameInput.value.trim();
   const roomId = roomInput.value.trim();
+
   if (!name || name.length < 2) {
     alert("Nombre requerido");
     return;
@@ -107,15 +108,13 @@ joinBtn.onclick = () => {
     alert("ID de sala requerido");
     return;
   }
-  socket.emit('joinRoom', { name, roomId });
-};
 
-  
+  // Estos logs y set pueden ir AQUÍ
   console.log('[JOIN] Uniéndose a sala:', roomId, 'con nombre:', name);
   localStorage.setItem('playerName', name);
-  socket.emit('joinRoom', { roomId, name });
+  socket.emit('joinRoom', { name, roomId });
   log(`Intentando unirse a sala ${roomId}...`);
-  
+
   // Feedback visual
   joinBtn.disabled = true;
   joinBtn.textContent = 'Uniéndose...';
@@ -123,6 +122,7 @@ joinBtn.onclick = () => {
     joinBtn.disabled = false;
     joinBtn.textContent = 'Unirse';
   }, 2000);
+};
 
 // Comenzar juego
 startBtn.onclick = () => {
