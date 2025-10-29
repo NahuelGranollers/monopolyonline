@@ -31,12 +31,25 @@
     --warning: #f7941d;
   }
 
+  body.dark-mode {
+    --bg: #0a0e27;
+    --panel: #1a1f3a;
+    --accent: #00d4ff;
+    --text: #e6f1ff;
+    --tile-bg: #15182b;
+    --tile-border: #2a3050;
+    --board-border: #2a3050;
+    --success: #00ff88;
+    --error: #ff4757;
+  }
+
   html, body {
     height: 100%;
     margin: 0;
     font-family: 'Arial', 'Helvetica', sans-serif;
     background: var(--bg);
     color: var(--text);
+    transition: all 0.3s;
   }
 
   #app {
@@ -45,6 +58,53 @@
     gap: 12px;
     padding: 12px;
     box-sizing: border-box;
+    position: relative;
+  }
+
+  /* Logo MONOPB9 diagonal en el centro */
+  #app::before {
+    content: 'MONOPB9';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: -2px;
+  }
+
+  /* Botón de toggle oscuro */
+  #themeToggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10000;
+    padding: 10px 16px;
+    border-radius: 4px;
+    border: 2px solid var(--tile-border);
+    background: var(--accent);
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  #themeToggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  body.dark-mode #themeToggle {
+    background: #00d4ff;
+    color: #000;
   }
 
   .left {
@@ -52,6 +112,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    z-index: 10;
+    position: relative;
   }
 
   .boardWrap {
@@ -65,6 +127,13 @@
     justify-content: center;
     position: relative;
     box-shadow: 0 8px 24px rgba(0,0,0,0.3), inset 0 0 40px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .boardWrap {
+    background: linear-gradient(135deg, #0f1424 0%, #1a1f3a 100%);
+    box-shadow: inset 0 0 50px rgba(0, 212, 255, 0.1);
   }
 
   .sidebar {
@@ -74,6 +143,12 @@
     border-radius: 4px;
     padding: 12px;
     overflow: auto;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .sidebar {
+    box-shadow: 0 8px 24px rgba(0,0,0,.5), 0 0 20px rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.2);
   }
 
   h2 {
@@ -84,6 +159,11 @@
     text-transform: uppercase;
     border-bottom: 2px solid var(--accent);
     padding-bottom: 6px;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode h2 {
+    text-shadow: 0 0 10px rgba(0,212,255,0.5);
   }
 
   .controls {
@@ -101,12 +181,17 @@
     background: var(--tile-bg);
     color: var(--text);
     font-weight: 600;
+    transition: all 0.3s;
   }
 
   .controls input:focus {
     outline: none;
     border: 2px solid var(--accent);
     box-shadow: 0 0 8px rgba(237, 27, 36, 0.3);
+  }
+
+  body.dark-mode .controls input:focus {
+    box-shadow: 0 0 10px rgba(0,212,255,0.3);
   }
 
   .controls input::placeholder {
@@ -121,9 +206,15 @@
     color: #fff;
     cursor: pointer;
     font-weight: 900;
-    transition: all 0.2s;
+    transition: all 0.3s;
     text-transform: uppercase;
     font-size: 12px;
+  }
+
+  body.dark-mode .controls button {
+    background: #00d4ff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0,212,255,0.3);
   }
 
   .controls button:hover {
@@ -132,11 +223,21 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
 
+  body.dark-mode .controls button:hover {
+    background: #00ffea;
+    box-shadow: 0 0 25px rgba(0,212,255,0.6);
+  }
+
   .controls button:disabled {
     background: #ccc;
     color: #666;
     cursor: not-allowed;
     transform: none;
+  }
+
+  body.dark-mode .controls button:disabled {
+    background: #2a3050;
+    color: #555;
   }
 
   .playersList {
@@ -156,13 +257,28 @@
     transition: all 0.2s;
   }
 
+  body.dark-mode .playerCard {
+    border-color: var(--tile-border);
+    background: var(--tile-bg);
+  }
+
   .playerCard:hover {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  body.dark-mode .playerCard:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(0,212,255,0.2);
   }
 
   .playerCard.active {
     border: 2px solid var(--accent);
     background: rgba(237, 27, 36, 0.05);
+  }
+
+  body.dark-mode .playerCard.active {
+    box-shadow: 0 0 0 2px var(--accent);
+    background: rgba(0,212,255,0.1);
   }
 
   .playerCard.disconnected {
@@ -184,6 +300,10 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   }
 
+  body.dark-mode .token {
+    box-shadow: 0 0 10px rgba(0,212,255,0.3);
+  }
+
   .btnRow {
     display: flex;
     gap: 8px;
@@ -199,9 +319,15 @@
     border-radius: 4px;
     cursor: pointer;
     font-weight: 900;
-    transition: all 0.2s;
+    transition: all 0.3s;
     font-size: 12px;
     text-transform: uppercase;
+  }
+
+  body.dark-mode button.action {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(0,212,255,0.3);
   }
 
   button.action:hover:not(:disabled) {
@@ -210,20 +336,21 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
 
+  body.dark-mode button.action:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,212,255,0.5);
+  }
+
   button.action:disabled {
     background: #ccc;
     color: #666;
     cursor: not-allowed;
     transform: none;
-    border-color: #999;
   }
 
-  button.action.danger {
-    background: var(--error);
-  }
-
-  button.action.danger:hover:not(:disabled) {
-    background: #d41321;
+  body.dark-mode button.action:disabled {
+    background: #2a3050;
+    color: #555;
   }
 
   .log {
@@ -236,12 +363,18 @@
     font-size: 13px;
     line-height: 1.5;
     font-family: 'Courier New', monospace;
+    transition: all 0.3s;
   }
 
   .log div {
     padding: 2px 0;
     border-bottom: 1px solid #eee;
     color: #333;
+  }
+
+  body.dark-mode .log div {
+    border-bottom-color: var(--tile-border);
+    color: var(--text);
   }
 
   .log div:last-child {
@@ -255,6 +388,7 @@
     border-radius: 0;
     perspective: 800px;
     background: var(--bg);
+    transition: all 0.3s;
   }
 
   .boardInner {
@@ -277,12 +411,21 @@
     box-sizing: border-box;
     font-size: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: all 0.2s;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .tile {
+    box-shadow: 0 4px 12px rgba(0,0,0,.5), 0 0 10px rgba(0,212,255,0.1);
   }
 
   .tile:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
+
+  body.dark-mode .tile:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(0,0,0,.7), 0 0 20px rgba(0,212,255,0.3);
   }
 
   .tile .title {
@@ -294,11 +437,16 @@
     text-align: center;
   }
 
+  body.dark-mode .tile .title {
+    text-shadow: 0 0 5px rgba(0,212,255,0.3);
+  }
+
   .colorBar {
     height: 14px;
     border-radius: 0;
     margin-top: 2px;
     border-bottom: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px currentColor;
   }
 
   .playersMarkers {
@@ -316,6 +464,10 @@
     animation: pulse 0.5s ease-in-out;
   }
 
+  body.dark-mode .tokenSmall {
+    box-shadow: 0 2px 6px rgba(0,0,0,.5), 0 0 8px currentColor;
+  }
+
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.2); }
@@ -331,6 +483,10 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
 
+  body.dark-mode .ownerBadge {
+    box-shadow: 0 0 8px currentColor;
+  }
+
   .modal-simple {
     position: fixed;
     inset: 0;
@@ -340,6 +496,11 @@
     background: rgba(0,0,0,0.7);
     z-index: 99999;
     animation: fadeIn 0.3s;
+  }
+
+  body.dark-mode .modal-simple {
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px);
   }
 
   @keyframes fadeIn {
@@ -359,7 +520,7 @@
     width: 180px;
     height: 180px;
     border-radius: 8px;
-    background: #fff;
+    background: var(--tile-bg);
     border: 3px solid var(--tile-border);
     display: flex;
     align-items: center;
@@ -368,7 +529,15 @@
     font-weight: 900;
     color: var(--text);
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    transition: transform 0.15s ease;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .dieSimple {
+    background: linear-gradient(135deg, #1a1f3a 0%, #0f1424 100%);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 18px 48px rgba(0,0,0,.8), 0 0 30px rgba(0,212,255,0.5);
+    text-shadow: 0 0 20px rgba(0,212,255,0.8);
   }
 
   .diePulse {
@@ -386,6 +555,12 @@
     font-weight: 900;
     font-size: 20px;
     text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .caption {
+    color: var(--accent);
+    text-shadow: 0 0 15px rgba(0,212,255,0.8);
   }
 
   .alert {
@@ -396,6 +571,7 @@
     font-weight: 600;
     animation: slideIn 0.3s;
     border: 2px solid;
+    transition: all 0.3s;
   }
 
   @keyframes slideIn {
@@ -409,10 +585,24 @@
     border-color: #1fb25a;
   }
 
+  body.dark-mode .alert.success {
+    background: rgba(0,255,136,0.1);
+    color: var(--success);
+    border-color: var(--success);
+    box-shadow: 0 0 15px rgba(0,255,136,0.2);
+  }
+
   .alert.error {
     background: #f8d7da;
     color: #721c24;
     border-color: var(--error);
+  }
+
+  body.dark-mode .alert.error {
+    background: rgba(255,71,87,0.1);
+    color: var(--error);
+    border-color: var(--error);
+    box-shadow: 0 0 15px rgba(255,71,87,0.2);
   }
 
   .alert.info {
@@ -421,12 +611,23 @@
     border-color: var(--lightblue);
   }
 
+  body.dark-mode .alert.info {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(0,212,255,0.2);
+  }
+
   .status-indicator {
     display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     margin-right: 6px;
+  }
+
+  body.dark-mode .status-indicator {
+    box-shadow: 0 0 8px currentColor;
   }
 
   .status-indicator.online {
@@ -448,6 +649,14 @@
     border: 2px solid var(--tile-border);
     color: var(--accent);
     font-weight: 900;
+    transition: all 0.3s;
+  }
+
+  body.dark-mode .roomId {
+    background: var(--tile-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(0,212,255,0.2);
   }
 
   #status {
@@ -457,6 +666,12 @@
     background: #f0e5d8;
     border-radius: 4px;
     border: 2px solid var(--tile-border);
+    transition: all 0.3s;
+  }
+
+  body.dark-mode #status {
+    background: var(--tile-bg);
+    border-color: var(--tile-border);
   }
 
   #copyRoomBtn {
@@ -470,6 +685,12 @@
     cursor: pointer;
     transition: all 0.2s;
     font-weight: 600;
+  }
+
+  body.dark-mode #copyRoomBtn {
+    background: var(--success);
+    color: #000;
+    box-shadow: 0 0 10px rgba(0,255,136,0.3);
   }
 
   #copyRoomBtn:hover {
@@ -501,6 +722,9 @@
     .diceBox {
       gap: 16px;
     }
+    #themeToggle {
+      top: 60px;
+    }
   }
 
   ::-webkit-scrollbar {
@@ -519,9 +743,21 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #d41321;
   }
+
+  body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+  }
+
+  body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #00ffea;
+  }
 </style>
 </head>
 <body>
+
+<!-- Botón para cambiar tema -->
+<button id="themeToggle">🌙 Oscuro</button>
+
 <div id="app">
   <div class="left">
     <div class="sidebar">
@@ -561,7 +797,7 @@
       </div>
 
       <h2>📊 Estado</h2>
-      <div style="background:#f0e5d8;padding:10px;border-radius:4px;border:2px solid #000">
+      <div style="background:var(--tile-bg);padding:10px;border-radius:4px;border:2px solid var(--tile-border);transition:all 0.3s">
         <div><strong>Turno:</strong> <span id="turnInfo">-</span></div>
         <div style="margin-top:6px"><strong>Dados:</strong> <span id="diceSmall">-</span></div>
         <div style="margin-top:6px"><strong>Dinero:</strong> <span id="moneyInfo" style="color:var(--success);font-weight:900">$0</span></div>
@@ -583,6 +819,24 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+// ===== TOGGLE TEMA OSCURO =====
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+const savedTheme = localStorage.getItem('monopolyTheme') || 'light';
+if (savedTheme === 'dark') {
+  body.classList.add('dark-mode');
+  themeToggle.textContent = '☀️ Claro';
+}
+
+themeToggle.onclick = () => {
+  body.classList.toggle('dark-mode');
+  const isDark = body.classList.contains('dark-mode');
+  themeToggle.textContent = isDark ? '☀️ Claro' : '🌙 Oscuro';
+  localStorage.setItem('monopolyTheme', isDark ? 'dark' : 'light');
+};
+
+// ===== SOCKET IO Y LÓGICA DEL JUEGO =====
 const socket = io();
 let state = null;
 let myId = null;
@@ -860,7 +1114,7 @@ function renderState() {
     if (p.inJail) statusIcon = '🔒';
     if (p.bankrupt) statusIcon = '💀';
     if (p.disconnected) statusIcon = '📡';
-    info.innerHTML = `<strong>${p.name} ${statusIcon}</strong><div style="font-size:12px;color:#666;margin-top:2px">💰 $${p.money} • 📍 Pos ${p.position} ${p.properties.length > 0 ? ` • 🏠 ${p.properties.length}` : ''}</div>`;
+    info.innerHTML = `<strong>${p.name} ${statusIcon}</strong><div style="font-size:12px;color:var(--muted);margin-top:2px">💰 $${p.money} • 📍 Pos ${p.position} ${p.properties.length > 0 ? ` • 🏠 ${p.properties.length}` : ''}</div>`;
     card.appendChild(token);
     card.appendChild(info);
     playersList.appendChild(card);
@@ -909,7 +1163,7 @@ function renderBoard() {
     if (t.price) {
       const price = document.createElement('div');
       price.style.fontSize = '10px';
-      price.style.color = '#333';
+      price.style.color = 'var(--text)';
       price.style.fontWeight = '700';
       price.textContent = '$' + t.price;
       el.appendChild(price);
@@ -936,7 +1190,7 @@ function renderBoard() {
     }
     if (t.mortgaged) {
       const mortLabel = document.createElement('div');
-      mortLabel.style.cssText = 'position:absolute;top:2px;right:2px;font-size:9px;background:#ed1b24;color:#fff;padding:1px 2px;border-radius:2px;font-weight:700';
+      mortLabel.style.cssText = 'position:absolute;top:2px;right:2px;font-size:9px;background:var(--error);color:#fff;padding:1px 2px;border-radius:2px;font-weight:700';
       mortLabel.textContent = 'HIP';
       el.appendChild(mortLabel);
     }
