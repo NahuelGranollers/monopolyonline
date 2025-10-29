@@ -149,46 +149,79 @@ function createBoard() {
     board[idx] = Object.assign({ idx, name, type }, opts);
   };
   
-  add(0, 'Salida', 'go');
-  add(1, 'Mediterráneo', 'property', { color: 'brown', price: 60, rent: [2,10,30,90,160,250], houseCost: 50, owner: null });
+  // SALIDA
+  add(0, 'Rambla Poblenou', 'go');
+  
+  // GRUPO MARRÓN - Calles económicas
+  add(1, 'C/ Pallars', 'property', { color: 'brown', price: 60, rent: [2,10,30,90,160,250], houseCost: 50, owner: null });
   add(2, 'Caja Común', 'community');
-  add(3, 'Báltico', 'property', { color: 'brown', price: 60, rent: [4,20,60,180,320,450], houseCost: 50, owner: null });
+  add(3, 'C/ Tánger', 'property', { color: 'brown', price: 60, rent: [4,20,60,180,320,450], houseCost: 50, owner: null });
+  
+  // IMPUESTO
   add(4, 'Impuesto', 'tax', { amount: 200 });
-  add(5, 'Est. Reading', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
-  add(6, 'Oriental', 'property', { color: 'lightblue', price: 100, rent: [6,30,90,270,400,550], houseCost: 50, owner: null });
+  
+  // METRO/TRAM - Transporte
+  add(5, 'Metro Poblenou', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
+  
+  // GRUPO AZUL CLARO
+  add(6, 'C/ Pujades', 'property', { color: 'lightblue', price: 100, rent: [6,30,90,270,400,550], houseCost: 50, owner: null });
   add(7, 'Suerte', 'chance');
-  add(8, 'Vermont', 'property', { color: 'lightblue', price: 100, rent: [6,30,90,270,400,550], houseCost: 50, owner: null });
-  add(9, 'Connecticut', 'property', { color: 'lightblue', price: 120, rent: [8,40,100,300,450,600], houseCost: 50, owner: null });
-  add(10, 'Cárcel', 'jail');
-  add(11, 'St. Charles', 'property', { color: 'pink', price: 140, rent: [10,50,150,450,625,750], houseCost: 100, owner: null });
-  add(12, 'Cía. Eléctrica', 'utility', { price: 150, owner: null });
-  add(13, 'States', 'property', { color: 'pink', price: 140, rent: [10,50,150,450,625,750], houseCost: 100, owner: null });
-  add(14, 'Virginia', 'property', { color: 'pink', price: 160, rent: [12,60,180,500,700,900], houseCost: 100, owner: null });
-  add(15, 'FC Penn.', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
-  add(16, 'St. James', 'property', { color: 'orange', price: 180, rent: [14,70,200,550,750,950], houseCost: 100, owner: null });
+  add(8, 'C/ Llull', 'property', { color: 'lightblue', price: 100, rent: [6,30,90,270,400,550], houseCost: 50, owner: null });
+  add(9, 'Av. Diagonal', 'property', { color: 'lightblue', price: 120, rent: [8,40,100,300,450,600], houseCost: 50, owner: null });
+  
+  // CÁRCEL
+  add(10, '4 Cantons', 'jail');
+  
+  // GRUPO ROSA
+  add(11, 'Parc del Centre', 'property', { color: 'pink', price: 140, rent: [10,50,150,450,625,750], houseCost: 100, owner: null });
+  add(12, 'Can Framis', 'utility', { price: 150, owner: null });
+  add(13, 'C/ Zamora', 'property', { color: 'pink', price: 140, rent: [10,50,150,450,625,750], houseCost: 100, owner: null });
+  add(14, 'C/ Pere IV', 'property', { color: 'pink', price: 160, rent: [12,60,180,500,700,900], houseCost: 100, owner: null });
+  
+  // TRAM
+  add(15, 'Tram Glòries', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
+  
+  // GRUPO NARANJA
+  add(16, 'Rambla Prim', 'property', { color: 'orange', price: 180, rent: [14,70,200,550,750,950], houseCost: 100, owner: null });
   add(17, 'Caja Común', 'community');
-  add(18, 'Tennessee', 'property', { color: 'orange', price: 180, rent: [14,70,200,550,750,950], houseCost: 100, owner: null });
-  add(19, 'New York', 'property', { color: 'orange', price: 200, rent: [16,80,220,600,800,1000], houseCost: 100, owner: null });
-  add(20, 'Parking', 'free');
-  add(21, 'Kentucky', 'property', { color: 'red', price: 220, rent: [18,90,250,700,875,1050], houseCost: 150, owner: null });
+  add(18, 'Palo Alto', 'property', { color: 'orange', price: 180, rent: [14,70,200,550,750,950], houseCost: 100, owner: null });
+  add(19, 'C/ Bilbao', 'property', { color: 'orange', price: 200, rent: [16,80,220,600,800,1000], houseCost: 100, owner: null });
+  
+  // PARKING GRATUITO
+  add(20, 'Parking Gratis', 'free');
+  
+  // GRUPO ROJO - Zonas premium
+  add(21, 'Parc Central', 'property', { color: 'red', price: 220, rent: [18,90,250,700,875,1050], houseCost: 150, owner: null });
   add(22, 'Suerte', 'chance');
-  add(23, 'Indiana', 'property', { color: 'red', price: 220, rent: [18,90,250,700,875,1050], houseCost: 150, owner: null });
-  add(24, 'Illinois', 'property', { color: 'red', price: 240, rent: [20,100,300,750,925,1100], houseCost: 150, owner: null });
-  add(25, 'B. & O. RR', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
-  add(26, 'Atlantic', 'property', { color: 'yellow', price: 260, rent: [22,110,330,800,975,1150], houseCost: 150, owner: null });
-  add(27, 'Ventnor', 'property', { color: 'yellow', price: 260, rent: [22,110,330,800,975,1150], houseCost: 150, owner: null });
-  add(28, 'Cía. Agua', 'utility', { price: 150, owner: null });
-  add(29, 'Marvin Gardens', 'property', { color: 'yellow', price: 280, rent: [24,120,360,850,1025,1200], houseCost: 150, owner: null });
+  add(23, 'Ca l\'Alier', 'property', { color: 'red', price: 220, rent: [18,90,250,700,875,1050], houseCost: 150, owner: null });
+  add(24, 'Teatre Nacional', 'property', { color: 'red', price: 240, rent: [20,100,300,750,925,1100], houseCost: 150, owner: null });
+  
+  // BICI/TRANSPORTE
+  add(25, 'Bicing Llacuna', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
+  
+  // GRUPO AMARILLO
+  add(26, 'Av. Icària', 'property', { color: 'yellow', price: 260, rent: [22,110,330,800,975,1150], houseCost: 150, owner: null });
+  add(27, 'Zoo Barcelona', 'property', { color: 'yellow', price: 260, rent: [22,110,330,800,975,1150], houseCost: 150, owner: null });
+  add(28, 'Disseny Hub', 'utility', { price: 150, owner: null });
+  add(29, 'Plaça Glòries', 'property', { color: 'yellow', price: 280, rent: [24,120,360,850,1025,1200], houseCost: 150, owner: null });
+  
+  // VE A LA CÁRCEL
   add(30, 'Ve a Cárcel', 'gotojail');
-  add(31, 'Pacific', 'property', { color: 'green', price: 300, rent: [26,130,390,900,1100,1275], houseCost: 200, owner: null });
-  add(32, 'N. Carolina', 'property', { color: 'green', price: 300, rent: [26,130,390,900,1100,1275], houseCost: 200, owner: null });
+  
+  // GRUPO VERDE - Lugares emblemáticos
+  add(31, 'Torre Agbar', 'property', { color: 'green', price: 300, rent: [26,130,390,900,1100,1275], houseCost: 200, owner: null });
+  add(32, '22@ District', 'property', { color: 'green', price: 300, rent: [26,130,390,900,1100,1275], houseCost: 200, owner: null });
   add(33, 'Caja Común', 'community');
-  add(34, 'Pennsylvania', 'property', { color: 'green', price: 320, rent: [28,150,450,1000,1200,1400], houseCost: 200, owner: null });
-  add(35, 'Short Line', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
+  add(34, 'Centre Cult. Poblenou', 'property', { color: 'green', price: 320, rent: [28,150,450,1000,1200,1400], houseCost: 200, owner: null });
+  
+  // METRO
+  add(35, 'Metro Llacuna', 'property', { color: 'rail', price: 200, rent: [25,50,100,200], owner: null });
+  
+  // GRUPO AZUL OSCURO - Lo más exclusivo
   add(36, 'Suerte', 'chance');
-  add(37, 'Park Place', 'property', { color: 'darkblue', price: 350, rent: [35,175,500,1100,1300,1500], houseCost: 200, owner: null });
+  add(37, 'Platja Bogatell', 'property', { color: 'darkblue', price: 350, rent: [35,175,500,1100,1300,1500], houseCost: 200, owner: null });
   add(38, 'Impuesto Lujo', 'tax', { amount: 100 });
-  add(39, 'Boardwalk', 'property', { color: 'darkblue', price: 400, rent: [50,200,600,1400,1700,2000], houseCost: 200, owner: null });
+  add(39, 'Port Olímpic', 'property', { color: 'darkblue', price: 400, rent: [50,200,600,1400,1700,2000], houseCost: 200, owner: null });
   
   return board;
 }
