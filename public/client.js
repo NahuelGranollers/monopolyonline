@@ -123,7 +123,6 @@ joinBtn.onclick = () => {
     joinBtn.disabled = false;
     joinBtn.textContent = 'Unirse';
   }, 2000);
-};
 
 // Comenzar juego
 startBtn.onclick = () => {

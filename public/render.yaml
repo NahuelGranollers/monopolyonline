@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: monopoly-server
+    env: node
+    repo: https://github.com/nahuelgranollers/monopolyonline
+    branch: main
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MAX_PLAYERS
+        value: "8"
+      - key: CORS_ORIGIN
+        value: "*"
+    plan: starter
+    autoDeploy: true
+    rootDir: .
+    healthCheckPath: /
