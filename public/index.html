@@ -2,479 +2,522 @@
 <html lang="es">
 <head>
 <meta charset="utf-8" />
-<title>Monopoly Poblenou - Modo Oscuro</title>
+<title>Monopoly Poblenou Barcelona</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  :root{
-    --bg:#0a0e27;
-    --panel:#1a1f3a;
-    --accent:#00d4ff;
-    --muted:#8892b0;
-    --tile-size:78px;
-    --success:#00ff88;
-    --error:#ff4757;
-    --warning:#ffa502;
-    --tile-bg:#15182b;
-    --tile-border:#2a3050;
-    --text:#e6f1ff;
+  :root {
+    --bg: #c8d4c0;
+    --panel: #fefdf5;
+    --accent: #ed1b24;
+    --text: #000000;
+    --tile-bg: #fefdf5;
+    --tile-border: #000000;
+    --board-border: #8b7355;
+    
+    --brown: #8b4513;
+    --lightblue: #aaddf6;
+    --pink: #d93a96;
+    --orange: #f7941d;
+    --red: #ed1b24;
+    --yellow: #fef200;
+    --green: #1fb25a;
+    --darkblue: #0072bb;
+    --rail: #2d2d2d;
+    --utility: #87ceeb;
+    
+    --tile-size: 78px;
+    --success: #1fb25a;
+    --error: #ed1b24;
+    --warning: #f7941d;
   }
-  
-  html,body{
-    height:100%;
-    margin:0;
-    font-family:'Segoe UI',Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    background: var(--bg);
+    color: var(--text);
   }
-  
-  #app{
-    display:flex;
-    height:100vh;
-    gap:12px;
-    padding:12px;
-    box-sizing:border-box;
+
+  #app {
+    display: flex;
+    height: 100vh;
+    gap: 12px;
+    padding: 12px;
+    box-sizing: border-box;
   }
-  
-  .left{
-    width:420px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+
+  .left {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  
-  .boardWrap{
-    flex:1;
-    background:linear-gradient(135deg, #0f1424 0%, #1a1f3a 100%);
-    border-radius:12px;
-    padding:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    box-shadow:inset 0 0 50px rgba(0, 212, 255, 0.1);
+
+  .boardWrap {
+    flex: 1;
+    background: linear-gradient(135deg, #c8d4c0 0%, #b8c4b0 100%);
+    border: 8px solid var(--board-border);
+    border-radius: 4px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), inset 0 0 40px rgba(0,0,0,0.1);
   }
-  
-  .sidebar{
-    background:var(--panel);
-    box-shadow:0 8px 24px rgba(0,0,0,.5), 0 0 20px rgba(0,212,255,0.1);
-    border-radius:10px;
-    border:1px solid rgba(0,212,255,0.2);
-    padding:12px;
-    overflow:auto;
+
+  .sidebar {
+    background: var(--panel);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 3px solid var(--board-border);
+    border-radius: 4px;
+    padding: 12px;
+    overflow: auto;
   }
-  
-  h2{
-    margin:6px 0 10px 0;
-    font-size:16px;
-    font-weight:600;
-    color:var(--accent);
-    text-shadow:0 0 10px rgba(0,212,255,0.5);
+
+  h2 {
+    margin: 6px 0 10px 0;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 6px;
   }
-  
-  .controls{
-    display:flex;
-    gap:8px;
-    margin-bottom:8px;
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
   }
-  
-  .controls input{
-    flex:1;
-    padding:9px;
-    border:1px solid var(--tile-border);
-    border-radius:8px;
-    font-size:14px;
-    background:var(--tile-bg);
-    color:var(--text);
-    transition:all .3s;
+
+  .controls input {
+    flex: 1;
+    padding: 9px;
+    border: 2px solid var(--tile-border);
+    border-radius: 4px;
+    font-size: 14px;
+    background: var(--tile-bg);
+    color: var(--text);
+    font-weight: 600;
   }
-  
-  .controls input:focus{
-    outline:none;
-    border-color:var(--accent);
-    box-shadow:0 0 10px rgba(0,212,255,0.3);
+
+  .controls input:focus {
+    outline: none;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 8px rgba(237, 27, 36, 0.3);
   }
-  
-  .controls input::placeholder{
-    color:#555;
+
+  .controls input::placeholder {
+    color: #999;
   }
-  
-  .controls button{
-    padding:9px 16px;
-    border-radius:8px;
-    border:none;
-    background:var(--accent);
-    color:#000;
-    cursor:pointer;
-    font-weight:600;
-    transition:all .3s;
-    box-shadow:0 0 15px rgba(0,212,255,0.3);
+
+  .controls button {
+    padding: 9px 16px;
+    border-radius: 4px;
+    border: 2px solid var(--tile-border);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 900;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    font-size: 12px;
   }
-  
-  .controls button:hover{
-    background:#00ffea;
-    transform:translateY(-2px);
-    box-shadow:0 0 25px rgba(0,212,255,0.6);
+
+  .controls button:hover {
+    background: #d41321;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
-  
-  .controls button:disabled{
-    background:#2a3050;
-    color:#555;
-    cursor:not-allowed;
-    transform:none;
-    box-shadow:none;
+
+  .controls button:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
   }
-  
-  .playersList{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+
+  .playersList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
-  
-  .playerCard{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px;
-    border-radius:8px;
-    border:1px solid var(--tile-border);
-    background:var(--tile-bg);
-    transition:all .3s;
+
+  .playerCard {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 2px solid var(--tile-border);
+    background: var(--tile-bg);
+    transition: all 0.2s;
   }
-  
-  .playerCard:hover{
-    border-color:var(--accent);
-    box-shadow:0 0 15px rgba(0,212,255,0.2);
+
+  .playerCard:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
-  
-  .playerCard.active{
-    box-shadow:0 0 0 2px var(--accent);
-    background:rgba(0,212,255,0.1);
+
+  .playerCard.active {
+    border: 2px solid var(--accent);
+    background: rgba(237, 27, 36, 0.05);
   }
-  
-  .playerCard.disconnected{
-    opacity:.5;
-    border-color:var(--error);
+
+  .playerCard.disconnected {
+    opacity: 0.5;
+    border-color: var(--error);
   }
-  
-  .token{
-    width:32px;
-    height:32px;
-    border-radius:8px;
-    background:#666;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:14px;
-    box-shadow:0 0 10px rgba(0,212,255,0.3);
+
+  .token {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: #666;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   }
-  
-  .btnRow{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-bottom:8px;
+
+  .btnRow {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
   }
-  
-  button.action{
-    padding:10px 14px;
-    background:linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-    color:#000;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
-    transition:all .3s;
-    font-size:13px;
-    box-shadow:0 4px 15px rgba(0,212,255,0.3);
+
+  button.action {
+    padding: 10px 14px;
+    background: var(--accent);
+    color: #fff;
+    border: 2px solid var(--tile-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 900;
+    transition: all 0.2s;
+    font-size: 12px;
+    text-transform: uppercase;
   }
-  
-  button.action:hover:not(:disabled){
-    transform:translateY(-2px);
-    box-shadow:0 6px 20px rgba(0,212,255,0.5);
+
+  button.action:hover:not(:disabled) {
+    background: #d41321;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
-  
-  button.action:disabled{
-    background:#2a3050;
-    color:#555;
-    cursor:not-allowed;
-    transform:none;
-    box-shadow:none;
+
+  button.action:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    border-color: #999;
   }
-  
-  button.action.danger{
-    background:linear-gradient(135deg, #ff4757 0%, #d32f2f 100%);
-    color:#fff;
+
+  button.action.danger {
+    background: var(--error);
   }
-  
-  button.action.danger:hover:not(:disabled){
-    background:linear-gradient(135deg, #ff6b7a 0%, #e53935 100%);
+
+  button.action.danger:hover:not(:disabled) {
+    background: #d41321;
   }
-  
-  .log{
-    background:var(--tile-bg);
-    border:1px solid var(--tile-border);
-    padding:8px;
-    height:140px;
-    overflow:auto;
-    border-radius:6px;
-    font-size:13px;
-    line-height:1.5;
+
+  .log {
+    background: var(--tile-bg);
+    border: 2px solid var(--tile-border);
+    padding: 8px;
+    height: 140px;
+    overflow: auto;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-family: 'Courier New', monospace;
   }
-  
-  .log div{
-    padding:2px 0;
-    border-bottom:1px solid var(--tile-border);
-    color:var(--muted);
+
+  .log div {
+    padding: 2px 0;
+    border-bottom: 1px solid #eee;
+    color: #333;
   }
-  
-  .log div:last-child{
-    border:none;
+
+  .log div:last-child {
+    border: none;
   }
-  
-  .board{
-    width:calc(var(--tile-size) * 11 + 20px);
-    height:calc(var(--tile-size) * 11 + 20px);
-    position:relative;
-    border-radius:10px;
-    perspective:800px;
-    background:radial-gradient(circle at center, rgba(0,212,255,0.05), transparent);
+
+  .board {
+    width: calc(var(--tile-size) * 11 + 20px);
+    height: calc(var(--tile-size) * 11 + 20px);
+    position: relative;
+    border-radius: 0;
+    perspective: 800px;
+    background: var(--bg);
   }
-  
-  .boardInner{
-    width:100%;
-    height:100%;
-    position:relative;
+
+  .boardInner {
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
-  
-  .tile{
-    width:var(--tile-size);
-    height:var(--tile-size);
-    background:var(--tile-bg);
-    border:2px solid var(--tile-border);
-    border-radius:8px;
-    position:absolute;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding:6px;
-    box-sizing:border-box;
-    font-size:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.5), 0 0 10px rgba(0,212,255,0.1);
-    transition:all .3s;
+
+  .tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background: var(--tile-bg);
+    border: 2px solid var(--tile-border);
+    border-radius: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6px;
+    box-sizing: border-box;
+    font-size: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s;
   }
-  
-  .tile:hover{
-    transform:translateY(-3px);
-    box-shadow:0 6px 20px rgba(0,0,0,.7), 0 0 20px rgba(0,212,255,0.3);
-    border-color:var(--accent);
+
+  .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   }
-  
-  .tile .title{
-    font-size:11px;
-    font-weight:800;
-    line-height:1.2;
-    color:var(--text);
-    text-shadow:0 0 5px rgba(0,212,255,0.3);
+
+  .tile .title {
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--text);
+    text-transform: uppercase;
+    text-align: center;
   }
-  
-  .colorBar{
-    height:14px;
-    border-radius:4px;
-    margin-top:4px;
-    box-shadow:0 0 10px currentColor;
+
+  .colorBar {
+    height: 14px;
+    border-radius: 0;
+    margin-top: 2px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
   }
-  
-  .playersMarkers{
-    display:flex;
-    gap:4px;
-    margin-top:6px;
-    flex-wrap:wrap;
+
+  .playersMarkers {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    flex-wrap: wrap;
   }
-  
-  .tokenSmall{
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    box-shadow:0 2px 6px rgba(0,0,0,.5), 0 0 8px currentColor;
-    animation:pulse .5s ease-in-out;
+
+  .tokenSmall {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    animation: pulse 0.5s ease-in-out;
   }
-  
-  @keyframes pulse{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.15)}
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
   }
-  
-  .ownerBadge{
-    position:absolute;
-    right:6px;
-    bottom:6px;
-    width:14px;
-    height:14px;
-    border-radius:3px;
-    box-shadow:0 0 8px currentColor;
+
+  .ownerBadge {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
-  
-  .modal-simple{
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,0.9);
-    z-index:99999;
-    animation:fadeIn .3s;
-    backdrop-filter:blur(10px);
+
+  .modal-simple {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.7);
+    z-index: 99999;
+    animation: fadeIn 0.3s;
   }
-  
-  @keyframes fadeIn{
-    from{opacity:0}
-    to{opacity:1}
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
-  
-  .diceBox{
-    display:flex;
-    gap:28px;
-    align-items:center;
-    justify-content:center;
-    flex-direction:row;
+
+  .diceBox {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
   }
-  
-  .dieSimple{
-    width:180px;
-    height:180px;
-    border-radius:16px;
-    background:linear-gradient(135deg, #1a1f3a 0%, #0f1424 100%);
-    border:3px solid var(--accent);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:96px;
-    font-weight:900;
-    color:var(--accent);
-    box-shadow:0 18px 48px rgba(0,0,0,.8), 0 0 30px rgba(0,212,255,0.5);
-    transition:transform .15s ease;
-    text-shadow:0 0 20px rgba(0,212,255,0.8);
+
+  .dieSimple {
+    width: 180px;
+    height: 180px;
+    border-radius: 8px;
+    background: #fff;
+    border: 3px solid var(--tile-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 96px;
+    font-weight: 900;
+    color: var(--text);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.15s ease;
   }
-  
-  .diePulse{
-    animation:dicePulse .3s ease-in-out;
+
+  .diePulse {
+    animation: dicePulse 0.3s ease-in-out;
   }
-  
-  @keyframes dicePulse{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.1) rotate(5deg)}
+
+  @keyframes dicePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1) rotate(5deg); }
   }
-  
-  .caption{
-    color:var(--accent);
-    margin-top:20px;
-    font-weight:700;
-    font-size:20px;
-    text-shadow:0 0 15px rgba(0,212,255,0.8);
+
+  .caption {
+    color: var(--text);
+    margin-top: 20px;
+    font-weight: 900;
+    font-size: 20px;
+    text-transform: uppercase;
   }
-  
-  .alert{
-    padding:10px;
-    border-radius:6px;
-    margin-bottom:10px;
-    font-size:13px;
-    font-weight:600;
-    animation:slideIn .3s;
-    border:1px solid;
+
+  .alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    animation: slideIn 0.3s;
+    border: 2px solid;
   }
-  
-  @keyframes slideIn{
-    from{transform:translateY(-10px);opacity:0}
-    to{transform:translateY(0);opacity:1}
+
+  @keyframes slideIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-  
-  .alert.success{
-    background:rgba(0,255,136,0.1);
-    color:var(--success);
-    border-color:var(--success);
-    box-shadow:0 0 15px rgba(0,255,136,0.2);
+
+  .alert.success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #1fb25a;
   }
-  
-  .alert.error{
-    background:rgba(255,71,87,0.1);
-    color:var(--error);
-    border-color:var(--error);
-    box-shadow:0 0 15px rgba(255,71,87,0.2);
+
+  .alert.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: var(--error);
   }
-  
-  .alert.info{
-    background:rgba(0,212,255,0.1);
-    color:var(--accent);
-    border-color:var(--accent);
-    box-shadow:0 0 15px rgba(0,212,255,0.2);
+
+  .alert.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-color: var(--lightblue);
   }
-  
-  .status-indicator{
-    display:inline-block;
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    margin-right:6px;
-    box-shadow:0 0 8px currentColor;
+
+  .status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
   }
-  
-  .status-indicator.online{
-    background:var(--success);
+
+  .status-indicator.online {
+    background: var(--success);
   }
-  
-  .status-indicator.offline{
-    background:var(--error);
+
+  .status-indicator.offline {
+    background: var(--error);
   }
-  
-  .roomId{
-    background:var(--tile-bg);
-    padding:4px 8px;
-    border-radius:4px;
-    font-family:monospace;
-    font-size:12px;
-    display:inline-block;
-    margin-top:6px;
-    border:1px solid var(--accent);
-    color:var(--accent);
-    box-shadow:0 0 10px rgba(0,212,255,0.2);
+
+  .roomId {
+    background: #f0e5d8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 6px;
+    border: 2px solid var(--tile-border);
+    color: var(--accent);
+    font-weight: 900;
   }
-  
-  #status{
-    color:var(--muted);
-    font-size:13px;
-    padding:8px;
-    background:var(--tile-bg);
-    border-radius:6px;
-    border:1px solid var(--tile-border);
+
+  #status {
+    color: var(--text);
+    font-size: 13px;
+    padding: 8px;
+    background: #f0e5d8;
+    border-radius: 4px;
+    border: 2px solid var(--tile-border);
   }
-  
-  #copyRoomBtn{
-    margin-left:8px;
-    padding:4px 8px;
-    font-size:11px;
-    background:var(--success);
-    color:#000;
-    border:none;
-    border-radius:4px;
-    cursor:pointer;
-    transition:all .3s;
-    box-shadow:0 0 10px rgba(0,255,136,0.3);
+
+  #copyRoomBtn {
+    margin-left: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    background: var(--success);
+    color: #fff;
+    border: 2px solid var(--tile-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
   }
-  
-  #copyRoomBtn:hover{
-    background:#00ff9d;
-    box-shadow:0 0 15px rgba(0,255,136,0.5);
+
+  #copyRoomBtn:hover {
+    background: #1f9d4a;
   }
-  
-  @media (max-width:900px){
-    #app{flex-direction:column;height:auto}
-    .left{width:100%;order:2}
-    .boardWrap{width:100%;height:450px;order:1}
-    .board{transform:scale(0.65)}
-    .dieSimple{width:120px;height:120px;font-size:64px}
-    .diceBox{gap:16px}
+
+  @media (max-width: 900px) {
+    #app {
+      flex-direction: column;
+      height: auto;
+    }
+    .left {
+      width: 100%;
+      order: 2;
+    }
+    .boardWrap {
+      width: 100%;
+      height: 450px;
+      order: 1;
+    }
+    .board {
+      transform: scale(0.65);
+    }
+    .dieSimple {
+      width: 120px;
+      height: 120px;
+      font-size: 64px;
+    }
+    .diceBox {
+      gap: 16px;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d41321;
   }
 </style>
 </head>
@@ -484,7 +527,7 @@
     <div class="sidebar">
       <h2>🎲 Monopoly Poblenou</h2>
       <div id="alerts"></div>
-      
+
       <div class="controls">
         <input id="name" placeholder="Tu nombre" maxlength="20">
         <button id="joinBtn">Unirse</button>
@@ -510,18 +553,18 @@
 
       <h2>🎮 Acciones</h2>
       <div class="btnRow">
-        <button class="action" id="rollBtn" disabled>🎲 Tirar dados</button>
-        <button class="action" id="endBtn" disabled>⏭️ Finalizar turno</button>
+        <button class="action" id="rollBtn" disabled>🎲 Tirar</button>
+        <button class="action" id="endBtn" disabled>📍 Finalizar</button>
         <button class="action" id="buyBtn" disabled>💰 Comprar</button>
         <button class="action" id="buildBtn" disabled>🏠 Construir</button>
         <button class="action" id="mortBtn" disabled>🏦 Hipotecar</button>
       </div>
 
       <h2>📊 Estado</h2>
-      <div style="background:var(--tile-bg);padding:10px;border-radius:6px;border:1px solid var(--tile-border)">
+      <div style="background:#f0e5d8;padding:10px;border-radius:4px;border:2px solid #000">
         <div><strong>Turno:</strong> <span id="turnInfo">-</span></div>
-        <div style="margin-top:6px"><strong>Últimos dados:</strong> <span id="diceSmall">-</span></div>
-        <div style="margin-top:6px"><strong>Tu dinero:</strong> <span id="moneyInfo" style="color:var(--success);font-weight:700">$0</span></div>
+        <div style="margin-top:6px"><strong>Dados:</strong> <span id="diceSmall">-</span></div>
+        <div style="margin-top:6px"><strong>Dinero:</strong> <span id="moneyInfo" style="color:var(--success);font-weight:900">$0</span></div>
       </div>
 
       <h2>📜 Registro</h2>
@@ -539,6 +582,400 @@
 <div id="modalRoot"></div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="client.js"></script>
+<script>
+const socket = io();
+let state = null;
+let myId = null;
+let currentRoomId = null;
+
+const createBtn = document.getElementById('createBtn');
+const joinBtn = document.getElementById('joinBtn');
+const startBtn = document.getElementById('startBtn');
+const rollBtn = document.getElementById('rollBtn');
+const endBtn = document.getElementById('endBtn');
+const buyBtn = document.getElementById('buyBtn');
+const buildBtn = document.getElementById('buildBtn');
+const mortBtn = document.getElementById('mortBtn');
+const nameInput = document.getElementById('name');
+const roomInput = document.getElementById('room');
+const playersList = document.getElementById('playersList');
+const turnInfo = document.getElementById('turnInfo');
+const moneyInfo = document.getElementById('moneyInfo');
+const boardInner = document.getElementById('boardInner');
+const logEl = document.getElementById('log');
+const diceSmall = document.getElementById('diceSmall');
+const modalRoot = document.getElementById('modalRoot');
+const alertsDiv = document.getElementById('alerts');
+const roomInfo = document.getElementById('roomInfo');
+const roomIdDisplay = document.getElementById('roomIdDisplay');
+const copyRoomBtn = document.getElementById('copyRoomBtn');
+const playerCount = document.getElementById('playerCount');
+
+const savedName = localStorage.getItem('playerName');
+if (savedName) nameInput.value = savedName;
+
+nameInput.addEventListener('input', (e) => {
+  localStorage.setItem('playerName', e.target.value);
+});
+
+roomInput.addEventListener('input', (e) => {
+  e.target.value = e.target.value.toUpperCase();
+});
+
+function showAlert(message, type = 'info') {
+  const alert = document.createElement('div');
+  alert.className = `alert ${type}`;
+  alert.textContent = message;
+  alertsDiv.appendChild(alert);
+  setTimeout(() => alert.remove(), 5000);
+}
+
+function log(txt) {
+  const d = document.createElement('div');
+  d.textContent = `[${new Date().toLocaleTimeString()}] ${txt}`;
+  logEl.prepend(d);
+  while (logEl.children.length > 50) {
+    logEl.removeChild(logEl.lastChild);
+  }
+}
+
+function sanitizeInput(input) {
+  return input.replace(/[<>]/g, '').trim().substring(0, 20);
+}
+
+createBtn.onclick = () => {
+  const name = sanitizeInput(nameInput.value) || 'Jugador';
+  if (name.length < 2) {
+    showAlert('Nombre requerido (mín. 2 caracteres)', 'error');
+    nameInput.focus();
+    return;
+  }
+  localStorage.setItem('playerName', name);
+  socket.emit('createRoom', { name });
+  log('Creando nueva sala...');
+};
+
+joinBtn.onclick = () => {
+  const name = sanitizeInput(nameInput.value) || 'Jugador';
+  const roomId = sanitizeInput(roomInput.value);
+  if (!name || name.length < 2) {
+    showAlert('Nombre requerido (mín. 2 caracteres)', 'error');
+    nameInput.focus();
+    return;
+  }
+  if (!roomId) {
+    showAlert('ID de sala requerido', 'error');
+    roomInput.focus();
+    return;
+  }
+  localStorage.setItem('playerName', name);
+  socket.emit('joinRoom', { name, roomId });
+  log(`Uniéndose a sala ${roomId}...`);
+};
+
+socket.on('connect', () => {
+  myId = socket.id;
+  showAlert('✅ Conectado al servidor', 'success');
+});
+
+socket.on('disconnect', () => {
+  showAlert('❌ Desconectado del servidor', 'error');
+});
+
+socket.on('message', m => {
+  const msg = m.text || JSON.stringify(m);
+  log(msg);
+  if (m.type === 'error') showAlert(msg, 'error');
+  else if (m.type === 'success') showAlert(msg, 'success');
+  else if (m.type === 'info') showAlert(msg, 'info');
+});
+
+socket.on('roomCreated', ({ roomId }) => {
+  currentRoomId = roomId;
+  roomIdDisplay.textContent = roomId;
+  roomInput.value = roomId;
+  roomInfo.style.display = 'block';
+  startBtn.disabled = false;
+  log(`✅ Sala creada: ${roomId}`);
+  showAlert(`Sala creada: ${roomId}`, 'success');
+});
+
+socket.on('roomJoined', ({ roomId }) => {
+  currentRoomId = roomId;
+  roomIdDisplay.textContent = roomId;
+  roomInfo.style.display = 'block';
+  log(`✅ Unido a sala: ${roomId}`);
+  showAlert(`Unido a sala ${roomId}`, 'success');
+});
+
+socket.on('roomState', s => {
+  state = s;
+  renderState();
+});
+
+socket.on('diceRolled', ({ die1, die2, playerId, playerName }) => {
+  showDiceResult(die1, die2, playerId, playerName);
+});
+
+startBtn.onclick = () => {
+  if (!currentRoomId) return;
+  socket.emit('startGame', currentRoomId);
+};
+
+rollBtn.onclick = () => {
+  if (!currentRoomId) return;
+  showDiceLoadingModal();
+  socket.emit('rollDice', currentRoomId);
+};
+
+endBtn.onclick = () => {
+  if (!currentRoomId) return;
+  socket.emit('endTurn', currentRoomId);
+};
+
+buyBtn.onclick = () => {
+  if (!state || !currentRoomId) return;
+  const me = state.players.find(p => p.id === myId);
+  if (!me) return;
+  const tile = state.board[me.position];
+  if (tile && tile.price && tile.owner === null) {
+    socket.emit('buyProperty', { roomId: currentRoomId, propIndex: tile.idx });
+  }
+};
+
+buildBtn.onclick = () => {
+  if (!state || !currentRoomId) return;
+  const me = state.players.find(p => p.id === myId);
+  if (!me) return;
+  const candidate = me.properties.find(pi => (me.houses[pi] || 0) < 5);
+  if (candidate !== undefined) {
+    socket.emit('build', { roomId: currentRoomId, propIndex: candidate });
+  } else {
+    showAlert('No puedes construir más casas', 'info');
+  }
+};
+
+mortBtn.onclick = () => {
+  if (!state || !currentRoomId) return;
+  const me = state.players.find(p => p.id === myId);
+  if (!me) return;
+  const candidate = me.properties.find(pi => !state.board[pi].mortgaged);
+  if (candidate !== undefined) {
+    socket.emit('mortgageProperty', { roomId: currentRoomId, propIndex: candidate });
+  } else {
+    showAlert('No tienes propiedades para hipotecar', 'info');
+  }
+};
+
+copyRoomBtn.onclick = () => {
+  navigator.clipboard.writeText(currentRoomId).then(() => {
+    showAlert('✅ ID copiado', 'success');
+    copyRoomBtn.textContent = '✓ Copiado';
+    setTimeout(() => { copyRoomBtn.textContent = '📋 Copiar'; }, 2000);
+  });
+};
+
+function showDiceLoadingModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-simple';
+  modal.id = 'diceModal';
+  const inner = document.createElement('div');
+  inner.style.textAlign = 'center';
+  const diceBox = document.createElement('div');
+  diceBox.className = 'diceBox';
+  const a = document.createElement('div');
+  a.className = 'dieSimple';
+  a.id = 'die1';
+  const b = document.createElement('div');
+  b.className = 'dieSimple';
+  b.id = 'die2';
+  a.textContent = '?';
+  b.textContent = '?';
+  diceBox.appendChild(a);
+  diceBox.appendChild(b);
+  const caption = document.createElement('div');
+  caption.className = 'caption';
+  caption.id = 'diceCaption';
+  caption.textContent = 'Tirando...';
+  inner.appendChild(diceBox);
+  inner.appendChild(caption);
+  modal.appendChild(inner);
+  modalRoot.appendChild(modal);
+}
+
+function showDiceResult(v1, v2, playerId, playerName) {
+  const modal = document.getElementById('diceModal');
+  if (!modal) {
+    showDiceLoadingModal();
+    setTimeout(() => showDiceResult(v1, v2, playerId, playerName), 100);
+    return;
+  }
+  const die1 = document.getElementById('die1');
+  const die2 = document.getElementById('die2');
+  const caption = document.getElementById('diceCaption');
+  let frames = 0;
+  const ticks = 8;
+  const timer = setInterval(() => {
+    frames++;
+    die1.textContent = Math.floor(Math.random() * 6) + 1;
+    die2.textContent = Math.floor(Math.random() * 6) + 1;
+    die1.classList.add('diePulse');
+    die2.classList.add('diePulse');
+    setTimeout(() => {
+      die1.classList.remove('diePulse');
+      die2.classList.remove('diePulse');
+    }, 150);
+    if (frames >= ticks) {
+      clearInterval(timer);
+      die1.textContent = v1;
+      die2.textContent = v2;
+      const total = v1 + v2;
+      const isDouble = v1 === v2;
+      caption.textContent = `${playerName}: ${v1} + ${v2} = ${total}`;
+      if (isDouble) caption.textContent += ' ¡DOBLES!';
+      diceSmall.textContent = `${v1} + ${v2} = ${total}`;
+      setTimeout(() => {
+        if (modalRoot.contains(modal)) modalRoot.removeChild(modal);
+      }, 1800);
+    }
+  }, 100);
+}
+
+function renderState() {
+  if (!state) return;
+  playersList.innerHTML = '';
+  playerCount.textContent = state.players.length;
+  state.players.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'playerCard';
+    if (p.id === myId) card.classList.add('active');
+    if (p.disconnected) card.classList.add('disconnected');
+    const token = document.createElement('div');
+    token.className = 'token';
+    token.style.background = colorFor(i);
+    token.textContent = i + 1;
+    const info = document.createElement('div');
+    info.style.flex = '1';
+    let statusIcon = '';
+    if (p.inJail) statusIcon = '🔒';
+    if (p.bankrupt) statusIcon = '💀';
+    if (p.disconnected) statusIcon = '📡';
+    info.innerHTML = `<strong>${p.name} ${statusIcon}</strong><div style="font-size:12px;color:#666;margin-top:2px">💰 $${p.money} • 📍 Pos ${p.position} ${p.properties.length > 0 ? ` • 🏠 ${p.properties.length}` : ''}</div>`;
+    card.appendChild(token);
+    card.appendChild(info);
+    playersList.appendChild(card);
+  });
+  const current = state.players[state.turnIndex];
+  turnInfo.textContent = current ? current.name : '-';
+  const me = state.players.find(p => p.id === myId);
+  moneyInfo.textContent = me ? ('$' + me.money) : '$0';
+  const myTurn = me && current && me.id === current.id && state.started && !me.bankrupt;
+  rollBtn.disabled = !myTurn || me?.rolledThisTurn;
+  endBtn.disabled = !myTurn;
+  const onMyProperty = me && state.board[me.position];
+  buyBtn.disabled = !(myTurn && onMyProperty && onMyProperty.price && onMyProperty.owner === null && me.money >= onMyProperty.price);
+  buildBtn.disabled = !(me && me.properties.length > 0);
+  mortBtn.disabled = !(me && me.properties.length > 0);
+  startBtn.disabled = state.started || state.players.length < 2;
+  renderBoard();
+  logEl.innerHTML = '';
+  (state.log || []).slice(0, 50).forEach(l => {
+    const div = document.createElement('div');
+    div.textContent = l;
+    logEl.appendChild(div);
+  });
+}
+
+function renderBoard() {
+  boardInner.innerHTML = '';
+  const tileSize = 78;
+  const offset = 10;
+  state.board.forEach(t => {
+    const c = getTileCoords(t.idx);
+    const el = document.createElement('div');
+    el.className = 'tile';
+    el.style.left = (c[0] * tileSize + offset) + 'px';
+    el.style.top = (c[1] * tileSize + offset) + 'px';
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.textContent = t.name;
+    el.appendChild(title);
+    if (t.color) {
+      const bar = document.createElement('div');
+      bar.className = 'colorBar';
+      bar.style.background = colorForName(t.color);
+      el.appendChild(bar);
+    }
+    if (t.price) {
+      const price = document.createElement('div');
+      price.style.fontSize = '10px';
+      price.style.color = '#333';
+      price.style.fontWeight = '700';
+      price.textContent = '$' + t.price;
+      el.appendChild(price);
+    }
+    const markers = document.createElement('div');
+    markers.className = 'playersMarkers';
+    state.players.forEach((pl, i) => {
+      if (pl.position === t.idx && !pl.bankrupt) {
+        const mk = document.createElement('div');
+        mk.className = 'tokenSmall';
+        mk.style.background = colorFor(i);
+        markers.appendChild(mk);
+      }
+    });
+    el.appendChild(markers);
+    if (t.owner) {
+      const ownerIdx = state.players.findIndex(p => p.id === t.owner);
+      if (ownerIdx >= 0) {
+        const badge = document.createElement('div');
+        badge.className = 'ownerBadge';
+        badge.style.background = colorFor(ownerIdx);
+        el.appendChild(badge);
+      }
+    }
+    if (t.mortgaged) {
+      const mortLabel = document.createElement('div');
+      mortLabel.style.cssText = 'position:absolute;top:2px;right:2px;font-size:9px;background:#ed1b24;color:#fff;padding:1px 2px;border-radius:2px;font-weight:700';
+      mortLabel.textContent = 'HIP';
+      el.appendChild(mortLabel);
+    }
+    boardInner.appendChild(el);
+  });
+}
+
+function getTileCoords(pos) {
+  const n = 11;
+  const ring = [];
+  for (let x = n - 1; x >= 0; x--) ring.push([x, n - 1]);
+  for (let y = n - 2; y >= 1; y--) ring.push([0, y]);
+  for (let x = 0; x <= n - 1; x++) ring.push([x, 0]);
+  for (let y = 1; y <= n - 2; y++) ring.push([n - 1, y]);
+  return ring[pos] || [0, 0];
+}
+
+function colorFor(i) {
+  const cols = ['#ed1b24', '#0072bb', '#1fb25a', '#f7941d', '#8b4513', '#d93a96', '#fef200', '#aaddf6'];
+  return cols[i % cols.length];
+}
+
+function colorForName(n) {
+  const map = {
+    brown: '#8b4513',
+    lightblue: '#aaddf6',
+    pink: '#d93a96',
+    orange: '#f7941d',
+    red: '#ed1b24',
+    yellow: '#fef200',
+    green: '#1fb25a',
+    darkblue: '#0072bb',
+    rail: '#2d2d2d',
+    utility: '#87ceeb'
+  };
+  return map[n] || '#ccc';
+}
+
+console.log('🎲 Monopoly Poblenou - Cargado');
+</script>
 </body>
 </html>
